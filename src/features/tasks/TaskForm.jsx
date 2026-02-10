@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTask } from "./taskSlice";
+import { useToast } from "../../components/ToastProvider";
 
 export default function TaskForm() {
   const [title, setTitle] = useState("");
@@ -8,11 +9,17 @@ export default function TaskForm() {
   const [category, setCategory] = useState("");
   const [tags, setTags] = useState("");
   const dispatch = useDispatch();
+  const { showToast } = useToast();
 
   const submit = (e) => {
     e?.preventDefault?.();
-    if (!title.trim()) return;
-    dispatch(addTask({ title, priority, category, tags }));
+    const trimmed = title.trim();
+    if (!trimmed) return;
+    dispatch(addTask({ title: trimmed, priority, category, tags }));
+    showToast({
+      type: "success",
+      message: `Created task: "${trimmed}"`,
+    });
     setTitle("");
     setCategory("");
     setTags("");

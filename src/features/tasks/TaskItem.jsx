@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteTask, toggleTask, updateTask } from "./taskSlice";
+import { useToast } from "../../components/ToastProvider";
 
 function priorityStyles(priority) {
   if (priority === "high") return "border-l-rose-500";
@@ -50,6 +51,7 @@ export default function TaskItem({
 }) {
   const dispatch = useDispatch();
   const { className: dragClassName, ...dragProps } = draggableProps || {};
+  const { showToast } = useToast();
   const [editing, setEditing] = useState(false);
   const [draftTitle, setDraftTitle] = useState(task.title);
   const [draftPriority, setDraftPriority] = useState(task.priority || "medium");
@@ -202,7 +204,13 @@ export default function TaskItem({
             </button>
             <button
               type="button"
-              onClick={() => dispatch(deleteTask(task.id))}
+              onClick={() => {
+                dispatch(deleteTask(task.id));
+                showToast({
+                  type: "error",
+                  message: `Deleted task: "${task.title}"`,
+                });
+              }}
               className="rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs hover:bg-white/10"
               aria-label={`Delete "${task.title}"`}
             >
@@ -214,8 +222,11 @@ export default function TaskItem({
 
       {!editing ? (
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-          <div className="text-xs text-slate-400">
-            Drag to reorder • Keyboard reorder:
+          <div className="hidden md:block text-xs text-slate-400">
+            Drag to reorder or use ↑/↓ buttons:
+          </div>
+          <div className="text-xs text-slate-400 md:hidden">
+            Hold and drag to reorder or use ↑/↓ buttons:
           </div>
           <div className="flex gap-2">
             <button
