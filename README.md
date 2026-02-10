@@ -3,6 +3,7 @@
 A task management application built using ReactJS and Redux Toolkit.
 
 ###Screenshot
+
 ![Task Tracker Screenshot](src/assets/Screenshot.png)
 
 ### Features
