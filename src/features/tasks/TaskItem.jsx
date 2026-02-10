@@ -220,6 +220,7 @@ export default function TaskItem({
           <div className="flex gap-2">
             <button
               type="button"
+              title="Move task up"
               onClick={onMoveUp}
               disabled={!canMoveUp}
               className="rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs hover:bg-white/10 disabled:opacity-50"
@@ -229,6 +230,7 @@ export default function TaskItem({
             </button>
             <button
               type="button"
+              title="Move task down"
               onClick={onMoveDown}
               disabled={!canMoveDown}
               className="rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs hover:bg-white/10 disabled:opacity-50"
