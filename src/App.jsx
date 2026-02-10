@@ -33,7 +33,7 @@ function App() {
               actions.
             </p>
           </div>
-          <div className="grid gap-2 justify-items-end">
+          <div className="grid gap-2 justify-items-end w-full md:w-auto ">
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
