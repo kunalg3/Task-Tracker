@@ -31,11 +31,31 @@ npm install
 npm run dev
 ```
 
+### Testing
+
+```bash
+# run tests in watch mode
+npm test
+
+# run once (CI)
+npm run test:run
+
+# run coverage report
+npm run test:coverage
+```
+
 ### Notes (for reviewers)
 
 - **State management**: global task state lives in Redux (`src/features/tasks/taskSlice.js`), persistence is handled via a store listener middleware (`src/app/store.js`) rather than writing to storage inside reducers.
 - **Accessibility**: all controls have labels; drag-and-drop has keyboard fallback.
 - **Import format**: JSON file must be an array of task objects (extra fields are ignored, missing fields are normalized).
+
+### Deployment (optional)
+
+You can deploy quickly on Netlify:
+
+- **Build command**: `npm run build`
+- **Publish directory**: `dist`
 
 ### Optional improvement
 

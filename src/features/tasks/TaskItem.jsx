@@ -8,6 +8,36 @@ function priorityStyles(priority) {
   return "border-l-amber-400";
 }
 
+const PRIORITY_BADGE_STYLES = {
+  low: {
+    label: "Low",
+    className: "border-emerald-500/30 bg-emerald-500/15 text-emerald-200",
+  },
+  medium: {
+    label: "Medium",
+    className: "border-amber-500/30 bg-amber-500/15 text-amber-200",
+  },
+  high: {
+    label: "High",
+    className: "border-rose-500/30 bg-rose-500/15 text-rose-200",
+  },
+};
+
+function PriorityBadge({ priority }) {
+  const key = priority in PRIORITY_BADGE_STYLES ? priority : "medium";
+  const cfg = PRIORITY_BADGE_STYLES[key];
+
+  return (
+    <span
+      className={`rounded-full border px-2 py-0.5 text-xs font-medium ${cfg.className}`}
+      aria-label={`Priority: ${cfg.label}`}
+      title={`Priority: ${cfg.label}`}
+    >
+      {cfg.label}
+    </span>
+  );
+}
+
 export default function TaskItem({
   task,
   index,
@@ -16,8 +46,10 @@ export default function TaskItem({
   onMoveUp,
   onMoveDown,
   draggableProps,
+  isDragging,
 }) {
   const dispatch = useDispatch();
+  const { className: dragClassName, ...dragProps } = draggableProps || {};
   const [editing, setEditing] = useState(false);
   const [draftTitle, setDraftTitle] = useState(task.title);
   const [draftPriority, setDraftPriority] = useState(task.priority || "medium");
@@ -59,15 +91,18 @@ export default function TaskItem({
 
   return (
     <div
-      className={`group rounded-xl border border-white/10 bg-white/5 p-3 border-l-4 ${priorityStyles(
+      className={`group select-none rounded-xl border border-white/10 bg-white/5 p-3 border-l-4 transition ${priorityStyles(
         task.priority,
-      )}`}
-      {...draggableProps}
+      )} ${isDragging ? "cursor-grabbing opacity-60" : "cursor-grab"} ${
+        dragClassName || ""
+      }`}
+      {...dragProps}
       aria-label={`Task ${index + 1}: ${task.title}`}
     >
       <div className="flex items-start gap-3">
         <input
           type="checkbox"
+          title="Toggle task completion"
           checked={task.completed}
           onChange={() => dispatch(toggleTask(task.id))}
           className="mt-1 h-4 w-4 accent-indigo-500"
@@ -145,9 +180,7 @@ export default function TaskItem({
                 >
                   {task.title}
                 </div>
-                <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-xs text-slate-200">
-                  {task.priority || "medium"}
-                </span>
+                <PriorityBadge priority={task.priority || "medium"} />
               </div>
               {meta ? (
                 <div className="mt-1 truncate text-xs text-slate-300">

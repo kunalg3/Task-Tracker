@@ -117,7 +117,7 @@ export default function TaskList() {
             key={task.id}
             onDragOver={onDragOver(task.id)}
             onDrop={onDrop(task.id)}
-            className={isOver ? "ring-2 ring-indigo-400/60 rounded-xl" : ""}
+            className={isOver ? "rounded-xl ring-2 ring-indigo-400/60" : ""}
           >
             <TaskItem
               task={task}
@@ -126,11 +126,11 @@ export default function TaskList() {
               canMoveDown={canMoveDown}
               onMoveUp={moveUp}
               onMoveDown={moveDown}
+              isDragging={isDragging}
               draggableProps={{
                 draggable: true,
                 onDragStart: onDragStart(task.id),
                 onDragEnd,
-                className: isDragging ? "opacity-60" : undefined,
               }}
             />
           </div>
